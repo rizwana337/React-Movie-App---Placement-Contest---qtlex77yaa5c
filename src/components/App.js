@@ -27,17 +27,37 @@ const App = () => {
     });
   }, [movies, sortBy])
 
+  const handlesort=()=>{
+    const sortedList=sortedMovies;
+    console.log(sortedList);
+    setMovies(sortedList);
+    setSortBy((prev)=>{
+      if(prev==="ascending"){
+        return "decending";
+      }
+      return "ascending";
+    });
+  };
+  useEffect(()=>{
+    console.log("movies modified",movies);
+  },[movies]);
   return (
     <div id="main">
       <h1>Movie Search</h1>
-      <SearchBar />
-      <button className="sort-btn">Sort Movies by release year ({sortBy})</button>
-      <MoviesList />
-      <section className='movie-details'>
-        <MovieDetails />
-      </section>
+      <SearchBar setMovies={setMovies}/>
+      <button onClick={handlesort} className="sort-btn">Sort Movies by release year ({sortBy})</button>
+      <MoviesList setSelectedMovie={setSelectedMovie} movies={movies}/>
+      {selectedMovie&&(
+  <section className='movie-details'>
+  <MovieDetails 
+  setSelectedMovie={setSelectedMovie}
+  selectedMovie={selectedMovie}
+  />
+</section>
+      )}
+    
     </div>
-  )
-}
+  );
+};
 
 export default App;
